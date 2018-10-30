@@ -189,6 +189,8 @@ class Rm(Visualize, Cluster):
             self.n_genes = df.shape[1]
             self.gene_names = df.columns.tolist()
             self.cell_names = df.index.tolist()
+            self.normal_genes = df.columns[(np.sum(df.values, axis=0) > 0)]
+            self.normal_cells = df.index[(np.sum(df.values, axis=1) > 0)]
         self._fit()
         return
 
