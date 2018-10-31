@@ -16,6 +16,9 @@ import matplotlib.lines as mlines
 
 import seaborn as sns
 
+import warnings
+
+
 from .visualization import Visualize
 from .clustering import Cluster
 
@@ -813,7 +816,9 @@ class Rm(Visualize, Cluster):
                                      with option refined=True''')
         #low-expressed genes
         genesproj=np.dot(self.X3.T,(abs(self.Vr))[:,:]).T 
+        warnings.filterwarnings('once')
         shapiro_stat_gen=np.apply_along_axis(self._shapiro, 0, genesproj[:,:])
+        warnings.filterwarnings('ignore')
         dist_genes=pd.Series(1-shapiro_stat_gen,index=self.X2.columns)
         loop=0
         k=0
