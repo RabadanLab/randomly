@@ -190,8 +190,10 @@ class Rm(Visualize, Cluster):
             self.X = df.values
             self.n_cells = df.shape[0]
             self.n_genes = df.shape[1]
-            self.normal_genes = df.columns.tolist()
-            self.normal_cells = df.index.tolist()
+            self.normal_genes = df.columns
+            self.normal_cells = df.index
+            self.X3 = pd.DataFrame(self.X, index=self.normal_cells,
+                columns=self.normal_genes)
         self._fit()
         return
 
@@ -233,7 +235,8 @@ class Rm(Visualize, Cluster):
         self.Ln = self.L[noise_boolean]
         self.n_components = len(self.Ls)
 
-        Vna = self.Vr[:, len(self.Lr)//2 - self.n_components//2: len(self.Lr)//2
+        Vna = self.Vr[:, len(self.Lr)//2 
+                 - self.n_components//2: len(self.Lr)//2
                  + self.n_components//2
                  + (self.n_components) % 2]
 
@@ -264,7 +267,10 @@ class Rm(Visualize, Cluster):
                         self.X)  
         # X = U S V^T= U(V S)^T = U (X^T U)^T = U U^T X ~ Us Us^T X
 
-    def return_cleaned(self, fdr=None, sample_variance=None,path=False):
+    def return_cleaned(self, 
+                        fdr=None, 
+                        sample_variance=None,
+                        path=False):
         ''' Method returns the dataframe with denoised single
         cell data if fdr == True, return method returns structure
         genes up to the fdr level
@@ -284,12 +290,14 @@ class Rm(Visualize, Cluster):
         if (fdr == 1) or (sample_variance==0):
              return self.X3
         else:
-            genes = self.select_genes(fdr,sample_variance)
+            genes = self.select_genes(fdr, sample_variance)
             if self._selection_flag:
                 if path:
-                    pd.DataFrame(self.X,index=self.normal_cells,columns=self.normal_genes)\
-                    .loc[:, genes].applymap(lambda x: round(x,3)).to_csv(path, sep='\t')
-                return pd.DataFrame(self.X,index=self.normal_cells,columns=self.normal_genes).loc[:, genes]
+                    pd.DataFrame(self.X, index=self.normal_cells, 
+                        columns=self.normal_genes).loc[:, genes]\
+                        .applymap(lambda x: round(x,3)).to_csv(path, sep='\t')
+                return pd.DataFrame(self.X,index=self.normal_cells,
+                                    columns=self.normal_genes).loc[:, genes]
             else:
                 print('''Criterium for selection of genes undefined,
                      please select FDR < 1 OR sample variance > 0''')
@@ -398,7 +406,7 @@ class Rm(Visualize, Cluster):
            of cell projections on components'''
         return np.dot(X, np.dot(X.T, V))
 
-    def get_gene_norm(self, X):
+    def _get_gene_norm(self, X):
         return np.sqrt(np.square(X).sum(axis=0) / X.shape[0])
 
     def plot_mp(self, comparison=True, path=False,
@@ -451,13 +459,16 @@ class Rm(Visualize, Cluster):
                  lw=2)
 
         
-        MP_data = mlines.Line2D([], [], color=sns.xkcd_rgb["pale red"],label='MP for random part in data'\
-                            ,linewidth=2)
-        MP_rand = mlines.Line2D([], [], color=sns.xkcd_rgb["sap green"],label='MP for randomized data' ,linewidth=1.5\
-                            ,linestyle='--')
-        randomized=mpatches.Patch(color=sns.xkcd_rgb["apple green"], label='Randomized data',alpha=0.75\
-                              ,linewidth=3, fill=False)
-        data_real=mpatches.Patch(color=sns.xkcd_rgb["cornflower blue"], label='Real data',alpha=0.85)
+        MP_data = mlines.Line2D([], [], color=sns.xkcd_rgb["pale red"],
+                            label='MP for random part in data',linewidth=2)
+        MP_rand = mlines.Line2D([], [], color=sns.xkcd_rgb["sap green"],
+                            label='MP for randomized data' ,linewidth=1.5,
+                            linestyle='--')
+        randomized=mpatches.Patch(color=sns.xkcd_rgb["apple green"], 
+                            label='Randomized data',alpha=0.75,
+                            linewidth=3, fill=False)
+        data_real=mpatches.Patch(color=sns.xkcd_rgb["cornflower blue"], 
+                            label='Real data',alpha=0.85)
         
         
         
@@ -475,10 +486,12 @@ class Rm(Visualize, Cluster):
                      ls='--'
                      )
                         
-            plt.legend(handles=[data_real, MP_data , randomized,MP_rand], loc="upper right",frameon=True)
+            plt.legend(handles=[data_real, MP_data , randomized,MP_rand], 
+                       loc="upper right", frameon=True)
 
         else:            
-            plt.legend(handles=[data_real, MP_data], loc="upper right",frameon=True)
+            plt.legend(handles=[data_real, MP_data], 
+                        loc="upper right",frameon=True)
 
         plt.xlim([0, int(round(max(np.max(self.Lr), np.max(self.L_mp))
                                + 1.5))])
@@ -492,17 +505,23 @@ class Rm(Visualize, Cluster):
             info1 = (r'$\bf{Data Parameters}$' + '\n{0} cells\n{1} genes'
                      .format(self.n_cells, self.n_genes))
             info2 = ('\n' + r'$\bf{MP\ distribution\ in\ data}$'
-                     + '\n$\gamma={:0.2f}$ \n$\sigma^2={:1.2f}$ \n$b_-={:2.2f}$\n$b_+={:3.2f}$'
-                     .format(dic['gamma'], dic['s'], dic['b_minus'], dic['b_plus']))
+                     + '\n$\gamma={:0.2f}$ \n$\sigma^2={:1.2f}$\
+                      \n$b_-={:2.2f}$\n$b_+={:3.2f}$'
+                     .format(dic['gamma'], dic['s'], dic['b_minus'], 
+                     dic['b_plus']))
             info3 = ('\n' + r'$\bf{Analysis}$' +
-                     '\n{0} eigenvalues > $\lambda_c (3 \sigma)$\n{1} noise eigenvalues'
-                     .format(self.n_components, self.n_cells - self.n_components))
+                     '\n{0} eigenvalues > $\lambda_c (3 \sigma)$\
+                     \n{1} noise eigenvalues'
+                     .format(self.n_components, self.n_cells - \
+                      self.n_components))
 
             
-            ks=stats.kstest(self.L_mp, self._call_mp_cdf(self.L_mp,dic)  )
+            ks=stats.kstest(self.L_mp, self._call_mp_cdf(self.L_mp,dic))
             
-            info4= '\n'+r'$\bf{Statistics}$'+'\nKS distance ={0}'.format(round(ks[0], 4))\
-                                +'\nKS test p-value={0}'.format(round(ks[1], 2))
+            info4= '\n'+r'$\bf{Statistics}$'+'\nKS distance ={0}'\
+                                .format(round(ks[0], 4))\
+                                +'\nKS test p-value={0}'\
+                                .format(round(ks[1], 2))
         
             infoT= info1+info2+info4+info3
             props = dict(boxstyle='round', facecolor='wheat', alpha=0.8)
@@ -656,10 +675,11 @@ class Rm(Visualize, Cluster):
                                      linestyle='--')
             line_gammas = mlines.Line2D([], [],
                                         color=sns.xkcd_rgb["blue blue"],
-                                        label=r'Gamma PDF: $\alpha =%.1f$, $\beta = %.2f$' % (
-                                            fits[0], 1/fits[2]),
+                                        label=r'Gamma PDF: $\alpha =%.1f$,$\beta = %.2f$'\
+                                        % (fits[0], 1/fits[2]),
                                         linewidth=1.5)
-            plt.legend(handles=[hist_s, line_gammas, hist_snr, line_gammar, hist_snl,
+            plt.legend(handles=[hist_s, line_gammas, hist_snr, 
+                                line_gammar, hist_snl,
                                 line_gammal, hist_sa, line_chi],
                        title=r'$\bf{Gene\ projection\ samples}$',
                        loc="upper right",
@@ -745,8 +765,10 @@ class Rm(Visualize, Cluster):
             idx = np.abs(y_fdr[0] - fdr).argmin()
             x = y_fdr[1][idx]
             genes = np.array(self.normal_genes)[self._s > x].tolist()
-        elif sample_variance is not None and sample_variance > 0.0 and fdr is None:
-            genes = np.array(self.normal_genes)[self._s > sample_variance].tolist()
+        elif sample_variance is not None and \
+        sample_variance > 0.0 and fdr is None:
+            genes = np.array(self.normal_genes)\
+            [self._s > sample_variance].tolist()
         else:
             self._selection_flag = False
             genes = np.array(self.normal_genes).tolist()
@@ -766,10 +788,12 @@ class Rm(Visualize, Cluster):
         if x < dic['b_minus']: 
             return 0.0
         elif x>dic['b_minus'] and x<dic['b_plus']:
-            return 1/float(2*dic['s']*np.pi*dic['gamma'])*float(np.sqrt((dic['b_plus']-x)*(x-dic['b_minus']))+\
-        (dic['b_plus']+dic['b_minus'])/2*np.arcsin((2*x-dic['b_plus']-dic['b_minus'])/(dic['b_plus']-dic['b_minus']))-\
-        np.sqrt(dic['b_plus']*dic['b_minus'])*np.arcsin(((dic['b_plus']+dic['b_minus'])*x-
-        2*dic['b_plus']*dic['b_minus'])/\
+            return 1/float(2*dic['s']*np.pi*dic['gamma'])*\
+            float(np.sqrt((dic['b_plus']-x)*(x-dic['b_minus']))+\
+            (dic['b_plus']+dic['b_minus'])/2*np.arcsin((2*x-dic['b_plus']-\
+            dic['b_minus'])/(dic['b_plus']-dic['b_minus']))-\
+        np.sqrt(dic['b_plus']*dic['b_minus'])*np.arcsin(((dic['b_plus']+\
+            dic['b_minus'])*x-2*dic['b_plus']*dic['b_minus'])/\
         ((dic['b_plus']-dic['b_minus'])*x)) )+np.arcsin(1)/np.pi
         else:
             return 1.0
@@ -784,7 +808,8 @@ class Rm(Visualize, Cluster):
     
     def refining(self,min_trans_per_gene=15):
         if not self._preprocessing2_flag:
-            raise ValueError('''Cleaning function only works with after running preprocess function
+            raise ValueError('''Cleaning function only works with 
+                                after running preprocess function
                                      with option refined=True''')
         #low-expressed genes
         genesproj=np.dot(self.X3.T,(abs(self.Vr))[:,:]).T 
@@ -794,7 +819,8 @@ class Rm(Visualize, Cluster):
         k=0
         while(loop==0):
             dist_genes_thrs=dist_genes.quantile([0.75-k]).values[0]
-            genes_low_exp=dist_genes[(dist_genes>dist_genes_thrs)].index.tolist()
+            genes_low_exp=dist_genes[(dist_genes>dist_genes_thrs)]\
+            .index.tolist()
             self.X=self.X2.drop(genes_low_exp,axis=1)
             if self.X.sum().min()>min_trans_per_gene:
                 loop=100
@@ -810,8 +836,9 @@ class Rm(Visualize, Cluster):
         self.n_cells = self.X.shape[0]
         self.n_genes = self.X.shape[1]
         
-        self.X3 = pd.DataFrame(np.log2(1 + self._to_tpm(self.X2.values)), index=self.X3.index, 
-                               columns=self.X3.columns).loc[self.normal_cells,:]   
+        self.X3 = pd.DataFrame(np.log2(1 + self._to_tpm(self.X2.values)), 
+                            index=self.X3.index, 
+                            columns=self.X3.columns).loc[self.normal_cells,:]   
         
         print(self.n_cells, ' cells and ', self.n_genes, ' genes')
         self._preprocessing_flag = True
@@ -849,7 +876,8 @@ class Rm(Visualize, Cluster):
 
         if self._preprocessing_flag:
             print(
-                '''Single Cell data has already been preprocessed with method preprocess''')
+                '''Single Cell data has already been preprocessed 
+                with method preprocess''')
         else:
             # Duplicated gene and cell names are removed
             if not df.index.is_unique:
@@ -857,16 +885,17 @@ class Rm(Visualize, Cluster):
                 df.index = range(len(df.index))
 
             if not df.columns.is_unique:
-                print('''Gene names are not unique. Duplicated genes will be removed''')
+                print('''Gene names are not unique. Duplicated 
+                    genes will be removed''')
                 df = df.loc[:, ~df.columns.duplicated()]
             self.gene_names = df.columns.tolist()
             self.cell_names = df.index.tolist()
 
-            self.normal_genes = df.columns[(np.sum(df.values, axis=0) > min_tp)
-                                           & (np.count_nonzero(df.values, axis=0) >= min_cells_per_gene)]
+            self.normal_genes = df.columns[(np.sum(df.values, axis=0) > min_tp)\
+            & (np.count_nonzero(df.values, axis=0) >= min_cells_per_gene)]
 
-            self.normal_cells = df.index[(np.sum(df.values, axis=1) > min_tp) &
-                                         (np.count_nonzero(df.values, axis=1) >= min_genes_per_cell)]
+            self.normal_cells = df.index[(np.sum(df.values, axis=1) > min_tp) &\
+            (np.count_nonzero(df.values, axis=1) >= min_genes_per_cell)]
 
             self.filtered_genes = list(
                 set(self.gene_names) - set(self.normal_genes))
@@ -884,7 +913,8 @@ class Rm(Visualize, Cluster):
                 self.std_ = np.std(self.X3, axis=0, ddof=0)
                 self.X3 = (self.X3-self.mean_) / (self.std_+0.0)
 
-                self.X3 = pd.DataFrame(self.X3, index=self.normal_cells, columns=df.columns)
+                self.X3 = pd.DataFrame(self.X3, index=self.normal_cells,
+                 columns=df.columns)
                 
                 Xr = self._random_matrix(self.X3)
                 Yr = self._wishart_matrix(Xr)
@@ -896,6 +926,7 @@ class Rm(Visualize, Cluster):
                 self.X = np.log2(1 + self._to_tpm(df.values))
                 self.n_cells = self.X.shape[0]
                 self.n_genes = self.X.shape[1]
-                self.X3 = pd.DataFrame(self.X, index=self.normal_cells, columns=self.normal_genes)
+                self.X3 = pd.DataFrame(self.X, index=self.normal_cells,
+                 columns=self.normal_genes)
                 print(self.n_cells, ' cells and ', self.n_genes, ' genes')
                 self._preprocessing_flag = True
