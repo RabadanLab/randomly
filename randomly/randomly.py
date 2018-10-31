@@ -184,13 +184,14 @@ class Rm(Visualize, Cluster):
             print("Preprocessed data is being used for fitting")
         else:
             print('Data has not been preprocessed')
+            detected_genes = df.columns[(np.sum(df.values, axis=0) > 0)]
+            detected_cells = df.index[(np.sum(df.values, axis=1) > 0)]
+            df = df.loc[detected_cells, detected_genes]
             self.X = df.values
             self.n_cells = df.shape[0]
             self.n_genes = df.shape[1]
-            self.gene_names = df.columns.tolist()
-            self.cell_names = df.index.tolist()
-            self.normal_genes = df.columns[(np.sum(df.values, axis=0) > 0)]
-            self.normal_cells = df.index[(np.sum(df.values, axis=1) > 0)]
+            self.normal_genes = df.columns.tolist()
+            self.normal_cells = df.index.tolist()
         self._fit()
         return
 
