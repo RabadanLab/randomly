@@ -32,7 +32,6 @@ Features
 --------
 
 Randomly only works with Python 3 (not Python 2). The easiest way to install Randomly is via the command line with pip:
-:
 
 .. code-block:: shell
     
@@ -40,7 +39,10 @@ Randomly only works with Python 3 (not Python 2). The easiest way to install Ran
 
 It's convenient to run Randomly in a `Jupyter Notebook`_.
 
+You can find detailed instructions and a tutorial here_.
+
 .. _`Jupyter Notebook`: http://jupyter.org/
+.. _here: https://rabadan.c2b2.columbia.edu/html/randomly/tutorial.html
 
 Credits
 -------
