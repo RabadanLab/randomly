@@ -12,7 +12,6 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [ 'pandas>=0.23.4', 'scipy>=1.1.0', 'matplotlib>=2.2.3', 'seaborn>=0.9.0','scikit-learn>=0.19.2', 'MulticoreTSNE>=0.0.1.1' ]
-#requirements = [ 'pandas' ]
 
 setup_requirements = ['pytest-runner', ]
 

@@ -24,17 +24,23 @@ A Library for Denoising Single-Cell Data with Random Matrix Theory
 
 
 * Free software: MIT license
-* Documentation: https://randomly.readthedocs.io.
+* Homepage: https://rabadan.c2b2.columbia.edu/html/randomly/index.html.
+* Instructions and Tutorial: https://rabadan.c2b2.columbia.edu/html/randomly/tutorial.html.
 
 
 Features
 --------
 
-Randomly is not yet published on PYPI. For now install directly from github:
+Randomly only works with Python 3 (not Python 2). The easiest way to install Randomly is via the command line with pip:
+:
 
 .. code-block:: shell
     
-    pip install --upgrade git+https://github.com/RabadanLab/randomly.git
+    pip install randomly
+
+It's convenient to run Randomly in a `Jupyter Notebook`_.
+
+.. _`Jupyter Notebook`: http://jupyter.org/
 
 Credits
 -------
