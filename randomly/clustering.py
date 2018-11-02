@@ -5,6 +5,7 @@ algorithms based on scikit-learn library
 from sklearn.cluster import KMeans
 from scipy.cluster import hierarchy
 
+
 class Cluster():
     '''Attributes
        ----------
@@ -15,7 +16,7 @@ class Cluster():
        labels:
        Labels for each data point
     '''
-    
+
     def __init__(self):
         self.X = None
 
@@ -26,13 +27,8 @@ class Cluster():
                               random_state=1).fit(self.X_vis)
         self.labels_kmeans = kmeans_model.labels_
 
-    def fit_hierarchical(self,method='ward'):
+    def fit_hierarchical(self, method='ward'):
         if self.X_vis is None:
             raise ValueError('Nothing to cluster, please fit tsne first')
         self.h2 = hierarchy.linkage(self.X_vis, method=method)
         self.h1 = hierarchy.linkage(self.X_vis.T, method=method)
-    
-    
-    
-    
-    
