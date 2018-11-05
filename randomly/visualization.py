@@ -426,7 +426,7 @@ class Visualize():
             if len(excase) > 0:
                 for i in excase:
                     self.embedding = np.delete(
-                        self.embedding, pd.index(excase).get_loc(i), axis=0)
+                        self.embedding, pd.Index(excase).get_loc(i), axis=0)
                 tabC = tabC.copy()
                 tabC.drop(excase, axis=0, inplace=True)
 
@@ -533,17 +533,21 @@ class Visualize():
               shade=True, alpha=1, lw=1.5, bw=.13)
         g.map(plt.axhline, y=0, lw=2, clip_on=False)
 
-        bottom, top = plt.xlim()
         down, up = plt.ylim()
         for i in g.row_names:
             if type(legend) is list:
                 mi = legend[g.row_names.index(i)]
-                g.axes[g.row_names.index(i), 0].text(bottom-len(mi)*0.35, up*0.04, mi,
-                                                     color=palette[g.row_names.index(i)], fontsize='medium')
+                g.axes[g.row_names.index(i),0].set_ylabel(mi,y=down*1.2,
+                               labelpad=20,
+                               color=palette[g.row_names.index(i)],
+                               fontsize='medium',rotation=0)                
             else:
                 mi = i
-                g.axes[g.row_names.index(i), 0].text(bottom-len('cluster ')*0.35, up*0.04, 'cluster '+str(mi),
-                                                     color=palette[g.row_names.index(i)], fontsize='medium')
+                g.axes[g.row_names.index(i),0].set_ylabel('cluster '+str(mi),y=down*1.2,
+                               labelpad=20,
+                               color=palette[g.row_names.index(i)],
+                               fontsize='medium',rotation=0)
+                
 
         if len(palette) < 11 and len(palette) > 5:
             g.fig.subplots_adjust(hspace=-0.7, top=0.70, bottom=0.05)
