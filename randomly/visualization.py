@@ -498,8 +498,8 @@ class Visualize():
 
         fig = plt.figure(figsize=[size, 5])
         sns.violinplot(data=cl2.T, orient='v', inner=None, order=order,
-                       palette=palette)
-        sns.stripplot(data=cl2.T, color="black", size=2.5, order=order)
+                       palette=palette,linewidth=0.5)
+        sns.stripplot(data=cl2.T, color="black", size=1.5, order=order)
 
         if legend:
             plt.xticks(rotation=45)
