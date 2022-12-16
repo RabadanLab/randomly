@@ -24,7 +24,7 @@ A Library for Denoising Single-Cell Data with Random Matrix Theory
 
 
 * Free software: MIT license
-* Instructions and Tutorial: https://github.com/RabadanLab/randomlypage
+* Instructions and Tutorial: https://github.com/RabadanLab/randomlypage 
 
 
 Features
@@ -41,7 +41,7 @@ It's convenient to run Randomly in a `Jupyter Notebook`_.
 You can find detailed instructions and a tutorial here_.
 
 .. _`Jupyter Notebook`: http://jupyter.org/
-.. _here: https://rabadan.c2b2.columbia.edu/html/randomly/tutorial.html
+.. _here: https://rabadanlab.github.io/randomlysite/src/index.html
 
 Credits
 -------
