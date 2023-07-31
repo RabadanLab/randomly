@@ -38,11 +38,11 @@ Randomly only works with Python 3 (not Python 2). The easiest way to install Ran
 
 It's convenient to run Randomly in a `Jupyter Notebook`_.
 
-You can find detailed instructions and a hosted_ tutorial or one that can be run from your local machine here_.
+You can find detailed instructions and a hosted_ tutorial or one that can be run from your local_ machine.
 
 .. _`Jupyter Notebook`: http://jupyter.org/
 .. _hosted: http://52.201.223.58:1234/
-.. _here: https://github.com/RabadanLab/randomlypage
+.. _local: https://github.com/RabadanLab/randomlypage
 
 Credits
 -------
