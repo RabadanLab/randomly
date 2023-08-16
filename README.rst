@@ -24,7 +24,7 @@ A Library for Denoising Single-Cell Data with Random Matrix Theory
 
 
 * Free software: MIT license
-* Instructions and Tutorial: https://github.com/RabadanLab/randomlypage 
+* Instructions and Tutorial: http://52.201.223.58:1234/
 
 
 Features
